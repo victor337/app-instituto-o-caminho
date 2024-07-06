@@ -3,9 +3,8 @@ import 'package:instituto_o_caminho/app_base.dart';
 import 'package:instituto_o_caminho/core/di/injection.dart';
 import 'package:instituto_o_caminho/core/flavors/app_flavor.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  bootStrap(AppFlavor(env: AppFlavorEnv.prod));
-
+  await bootStrap(AppFlavor(env: AppFlavorEnv.dev));
   runApp(const AppBase());
 }

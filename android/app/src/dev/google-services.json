@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "710844560448",
+    "project_id": "instituto-o-caminho-dev-a759d",
+    "storage_bucket": "instituto-o-caminho-dev-a759d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710844560448:android:6839ce49da49bf886f9ba5",
+        "android_client_info": {
+          "package_name": "com.instituto.caminho.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwkzVEZdBtw4sIkPrC0BP5SsfvQhK_4Jk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

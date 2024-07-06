@@ -1,0 +1,4 @@
+enum RegisterUserResult {
+  emailAlreadyUse,
+  failed,
+}
