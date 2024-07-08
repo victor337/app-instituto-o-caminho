@@ -8,6 +8,8 @@ import 'package:instituto_o_caminho/core/routes/app_routes_list.dart';
 import 'package:instituto_o_caminho/core/theme/app_colors.dart';
 import 'package:instituto_o_caminho/features/auth/presentation/pages/login/login_page_cubit.dart';
 import 'package:instituto_o_caminho/features/auth/presentation/pages/login/login_page_view.dart';
+import 'package:instituto_o_caminho/features/auth/presentation/pages/login/sections/login_page_email_section.dart';
+import 'package:instituto_o_caminho/features/auth/presentation/pages/login/sections/login_page_pass_section.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -88,10 +90,8 @@ class _LoginPageState extends State<LoginPage> implements LoginPageView {
               controller: pageController,
               physics: const NeverScrollableScrollPhysics(),
               children: const [
-                // LoginPageNameSection(),
-                // LoginPagePhoneSection(),
-                // LoginPageEmailSection(),
-                // LoginPagePassSection(),
+                LoginPageEmailSection(),
+                LoginPagePassSection(),
               ],
             ),
           ),
@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> implements LoginPageView {
   }
 
   @override
-  void errorToRegister(String message) {
+  void errorToLogin(String title, String message) {
     showDialog(
       context: context,
       builder: (context) {
@@ -118,7 +118,10 @@ class _LoginPageState extends State<LoginPage> implements LoginPageView {
           actions: [
             PrimaryButton(
               title: 'Tentar novamente',
-              onPressed: () {},
+              onPressed: () {
+                context.pop();
+                controller.login();
+              },
             ),
             const SizedBox(height: 16),
             SecondaryButton(
@@ -134,34 +137,7 @@ class _LoginPageState extends State<LoginPage> implements LoginPageView {
   }
 
   @override
-  void successToRegister() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AppAlertDialog(
-          canPopScope: false,
-          type: ModalAlertType.success,
-          title: 'Conta criada',
-          description: 'Vamos entrar na sua conta agora?',
-          actions: [
-            PrimaryButton(
-              title: 'Ir para login',
-              onPressed: () {
-                context.pop();
-                context.replace(AppRoutesList.login.fullPath);
-              },
-            ),
-            const SizedBox(height: 16),
-            SecondaryButton(
-              title: 'Fechar',
-              onPressed: () {
-                context.pop();
-                context.replace(AppRoutesList.onboarding);
-              },
-            ),
-          ],
-        );
-      },
-    );
+  void successToLogin() {
+    context.go(AppRoutesList.home);
   }
 }

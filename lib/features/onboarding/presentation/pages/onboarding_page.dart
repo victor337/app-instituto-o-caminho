@@ -14,9 +14,29 @@ class OnboardingPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const Spacer(),
+            Image.asset(
+              'assets/images/logo.png',
+              height: 200,
+            ),
+            const Text(
+              'Tranformando vidas através do assistencialismo',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: constLight,
+                fontSize: 16,
+              ),
+            ),
+            const Spacer(),
+            PrimaryButton(
+              title: 'Login',
+              onPressed: () {
+                context.push(AppRoutesList.login.fullPath);
+              },
+            ),
+            const SizedBox(height: 16),
             PrimaryButton(
               title: 'Cadastrar',
               onPressed: () {

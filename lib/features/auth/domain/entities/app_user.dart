@@ -6,9 +6,9 @@ class AppUser {
     required this.phone,
   });
 
-  static AppUser fromJson(Map<String, dynamic> data, String id) {
+  static AppUser fromJson(Map<String, dynamic> data) {
     return AppUser(
-      id: id,
+      id: data['id'],
       name: data['name'],
       email: data['email'],
       phone: data['phone'],

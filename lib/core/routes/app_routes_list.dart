@@ -1,5 +1,7 @@
 class AppRoutesList {
   static const onboarding = '/onboarding';
+  static const home = '/';
+
   static const login = AppRoute(
     path: 'login',
     fullPath: '/onboarding/login',

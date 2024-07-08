@@ -27,14 +27,14 @@ class AppAlertDialog extends StatelessWidget {
           return const Icon(
             Icons.check_circle,
             color: constLight,
-            size: 32,
+            size: 64,
           );
         case ModalAlertType.error:
         case ModalAlertType.alert:
           return const Icon(
             Icons.error,
             color: constLight,
-            size: 32,
+            size: 64,
           );
       }
     }
@@ -42,15 +42,17 @@ class AppAlertDialog extends StatelessWidget {
     return PopScope(
       canPop: canPopScope,
       child: AlertDialog(
-        surfaceTintColor: backgroundColor,
-        backgroundColor: backgroundColor,
+        surfaceTintColor: alertBackground,
+        backgroundColor: alertBackground,
         content: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
             getIcon(),
             const SizedBox(height: 16),
             Text(
               title,
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 20,
                 color: constLight,

@@ -4,7 +4,6 @@ import 'package:instituto_o_caminho/components/app_alert_dialog.dart';
 import 'package:instituto_o_caminho/components/primary_button.dart';
 import 'package:instituto_o_caminho/components/secondary_button.dart';
 import 'package:instituto_o_caminho/core/extensions/context_extension.dart';
-import 'package:instituto_o_caminho/core/routes/app_routes.dart';
 import 'package:instituto_o_caminho/core/routes/app_routes_list.dart';
 import 'package:instituto_o_caminho/core/theme/app_colors.dart';
 import 'package:instituto_o_caminho/features/auth/presentation/pages/register/register_page_cubit.dart';
