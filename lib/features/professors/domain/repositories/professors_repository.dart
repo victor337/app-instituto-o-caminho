@@ -1,0 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
+import 'package:instituto_o_caminho/features/professors/domain/entities/professor.dart';
+import 'package:instituto_o_caminho/features/professors/domain/results/get_professor_data_by_id_result.dart';
+
+abstract class ProfessorsRepository {
+  Future<Either<GetProfessorDataByIdResult, Professor>> getProfessorDataById(
+    String id,
+  );
+}
+
+class ProfessorsRepositoryImpl implements ProfessorsRepository {
+  @override
+  Future<Either<GetProfessorDataByIdResult, Professor>> getProfessorDataById(
+    String id,
+  ) async {
+    try {
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      final response = await firestore.collection('professors').doc(id).get();
+
+      return Right(Professor.fromJson(response.data()!));
+    } catch (e, s) {
+      return const Left(GetProfessorDataByIdResult.failed);
+    }
+  }
+}

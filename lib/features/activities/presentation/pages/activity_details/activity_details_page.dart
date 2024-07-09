@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instituto_o_caminho/components/app_alert_dialog.dart';
 import 'package:instituto_o_caminho/components/photo_view.dart';
 import 'package:instituto_o_caminho/components/primary_button.dart';
+import 'package:instituto_o_caminho/components/secondary_button.dart';
+import 'package:instituto_o_caminho/core/extensions/context_extension.dart';
 import 'package:instituto_o_caminho/core/theme/app_colors.dart';
-import 'package:instituto_o_caminho/features/activities/domain/entities/activity.dart';
 import 'package:instituto_o_caminho/features/activities/presentation/pages/activity_details/activity_details_page_cubit.dart';
+import 'package:instituto_o_caminho/features/activities/presentation/pages/activity_details/activity_details_page_view.dart';
 
 class ActivityDetailsPage extends StatefulWidget {
   const ActivityDetailsPage({required this.activityId, super.key});
@@ -15,13 +18,15 @@ class ActivityDetailsPage extends StatefulWidget {
   State<ActivityDetailsPage> createState() => _ActivityDetailsPageState();
 }
 
-class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
+class _ActivityDetailsPageState extends State<ActivityDetailsPage>
+    implements ActivityDetailsPageView {
   late ActivityDetailsPageCubit controller;
 
   @override
   void initState() {
     controller = ActivityDetailsPageCubit(
       activityId: widget.activityId,
+      view: this,
     );
     super.initState();
   }
@@ -81,6 +86,25 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
                       ),
                     ),
                     SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Text(
+                          'Professor: ',
+                          style: const TextStyle(
+                            color: constLight,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        Text(
+                          state.professor!.name,
+                          style: const TextStyle(
+                            color: constLight,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
                     Row(
                       children: [
                         Text(
@@ -191,6 +215,39 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
           },
         ),
       ),
+    );
+  }
+
+  @override
+  void initError() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AppAlertDialog(
+          canPopScope: false,
+          type: ModalAlertType.error,
+          title: 'Ops, tivemos um problema',
+          description:
+              'Houve um erro ao buscar os dados da atividade, tente novamente mais tarde.',
+          actions: [
+            PrimaryButton(
+              title: 'Tentar novamente',
+              onPressed: () {
+                context.pop();
+                controller.init();
+              },
+            ),
+            const SizedBox(height: 16),
+            SecondaryButton(
+              title: 'Fechar',
+              onPressed: () {
+                context.pop();
+                context.pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
