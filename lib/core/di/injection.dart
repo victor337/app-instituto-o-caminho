@@ -10,6 +10,7 @@ import 'package:instituto_o_caminho/features/activities/domain/repositories/acti
 import 'package:instituto_o_caminho/features/auth/domain/repositories/auth_repository.dart';
 import 'package:instituto_o_caminho/features/history/domain/repositories/history_repository.dart';
 import 'package:instituto_o_caminho/features/professors/domain/repositories/professors_repository.dart';
+import 'package:instituto_o_caminho/features/punishments/domain/repositories/punishments_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -51,6 +52,13 @@ Future<void> bootStrap(AppFlavor flavor) async {
 
   getIt.registerFactory<HistoryRepository>(
     () => HistoryRepositoryImpl(
+      authRepository: getIt(),
+      loggerRepository: getIt(),
+    ),
+  );
+
+  getIt.registerFactory<PunishmentsRepository>(
+    () => PunishmentsRepositoryImpl(
       authRepository: getIt(),
       loggerRepository: getIt(),
     ),

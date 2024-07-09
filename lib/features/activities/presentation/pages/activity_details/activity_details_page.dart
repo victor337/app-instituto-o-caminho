@@ -46,172 +46,196 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage>
               return Container();
             }
             return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      state.activity!.title,
-                      style: const TextStyle(
-                        color: constLight,
-                        fontSize: 32,
-                        fontWeight: FontWeight.w700,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    height: 200,
+                    width: double.maxFinite,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                      ),
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          state.activity!.images.first,
+                        ),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Sobre',
-                      style: TextStyle(
-                        color: constLight,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      state.activity!.description,
-                      style: const TextStyle(
-                        color: constLight,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Detalhes',
-                      style: TextStyle(
-                        color: constLight,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        Text(
+                          state.activity!.title,
+                          style: const TextStyle(
+                            color: constLight,
+                            fontSize: 32,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
                         const Text(
-                          'Professor: ',
+                          'Sobre',
+                          style: TextStyle(
+                            color: constLight,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          state.activity!.description,
+                          style: const TextStyle(
+                            color: constLight,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        const Text(
+                          'Detalhes',
+                          style: TextStyle(
+                            color: constLight,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            const Text(
+                              'Professor: ',
+                              style: TextStyle(
+                                color: constLight,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Text(
+                              state.professor!.name,
+                              style: const TextStyle(
+                                color: constLight,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Text(
+                              'Data: ',
+                              style: TextStyle(
+                                color: constLight,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Text(
+                              state.activity!.date,
+                              style: const TextStyle(
+                                color: constLight,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Text(
+                              'Endereço: ',
+                              style: TextStyle(
+                                color: constLight,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Text(
+                              state.activity!.address,
+                              style: const TextStyle(
+                                color: constLight,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Text(
+                              'Duração: ',
+                              style: TextStyle(
+                                color: constLight,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Text(
+                              state.activity!.duration,
+                              style: const TextStyle(
+                                color: constLight,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+                        const Text(
+                          'Fotos: ',
                           style: TextStyle(
                             color: constLight,
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        Text(
-                          state.professor!.name,
-                          style: const TextStyle(
-                            color: constLight,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Text(
-                          'Data: ',
-                          style: TextStyle(
-                            color: constLight,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Text(
-                          state.activity!.date,
-                          style: const TextStyle(
-                            color: constLight,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Text(
-                          'Endereço: ',
-                          style: TextStyle(
-                            color: constLight,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Text(
-                          state.activity!.address,
-                          style: const TextStyle(
-                            color: constLight,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Text(
-                          'Duração: ',
-                          style: TextStyle(
-                            color: constLight,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Text(
-                          state.activity!.duration,
-                          style: const TextStyle(
-                            color: constLight,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Fotos: ',
-                      style: TextStyle(
-                        color: constLight,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      height: 100,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: state.activity!.images.length,
-                        shrinkWrap: true,
-                        separatorBuilder: (ctx, i) {
-                          return const SizedBox(width: 10);
-                        },
-                        itemBuilder: (_, i) {
-                          final image = state.activity!.images[i];
+                        const SizedBox(height: 12),
+                        SizedBox(
+                          height: 100,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: state.activity!.images.length,
+                            shrinkWrap: true,
+                            separatorBuilder: (ctx, i) {
+                              return const SizedBox(width: 10);
+                            },
+                            itemBuilder: (_, i) {
+                              final image = state.activity!.images[i];
 
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PhotoView(image: image),
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          PhotoView(image: image),
+                                    ),
+                                  );
+                                },
+                                child: Image.network(
+                                  image,
+                                  height: 100,
+                                  width: 100,
+                                  fit: BoxFit.cover,
                                 ),
                               );
                             },
-                            child: Image.network(
-                              image,
-                              height: 100,
-                              width: 100,
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        },
-                      ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        PrimaryButton(
+                          title: state.buttonTitle,
+                          isLoading: state.buttonIsLoading,
+                          onPressed: controller.buttonPressed,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 24),
-                    PrimaryButton(
-                      title: state.buttonTitle,
-                      isLoading: state.buttonIsLoading,
-                      onPressed: controller.buttonPressed,
-                    ),
-                    const SizedBox(height: 24),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
               ),
             );
           },

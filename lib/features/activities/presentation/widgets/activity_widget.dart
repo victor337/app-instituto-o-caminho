@@ -19,40 +19,63 @@ class ActivityWidget extends StatelessWidget {
         ));
       },
       child: Container(
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: modalBackground,
           borderRadius: BorderRadius.circular(16),
           boxShadow: const [
             BoxShadow(
-              color: Colors.black,
+              color: Colors.black45,
               spreadRadius: 0.1,
-              blurRadius: 5,
-              offset: Offset(0, 2), // changes position of shadow
+              blurRadius: 2,
+              offset: Offset(0, 2),
             ),
           ],
         ),
-        padding: const EdgeInsets.all(8),
+        //padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              activity.title.toUpperCase(),
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: constLight,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
+            Expanded(
+              child: Image.network(
+                activity.images.first,
+                fit: BoxFit.cover,
               ),
             ),
-            const Text(
-              'Clique para ver detalhes',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 14,
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      activity.title,
+                      style: const TextStyle(
+                        color: constLight,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const Text(
+                      'Ver detalhes',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
+
+            // const Text(
+            //   'Clique para ver detalhes',
+            //   textAlign: TextAlign.center,
+            //   style: TextStyle(
+            //     color: Colors.grey,
+            //     fontSize: 14,
+            //   ),
+            // ),
           ],
         ),
       ),

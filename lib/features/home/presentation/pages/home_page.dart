@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instituto_o_caminho/core/theme/app_colors.dart';
 import 'package:instituto_o_caminho/features/activities/presentation/widgets/activities_list/activities_list_section.dart';
 import 'package:instituto_o_caminho/features/history/presentation/components/history_list_section/history_list_section.dart';
 import 'package:instituto_o_caminho/features/home/presentation/pages/home_page_cubit.dart';
+import 'package:instituto_o_caminho/features/user/presentation/components/user_rating/user_rating_section.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -46,8 +46,6 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 20,
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  const CircleAvatar(),
                 ],
               ),
             ),
@@ -65,6 +63,9 @@ class _HomePageState extends State<HomePage> {
                     ActivitiesListSection(),
                     SizedBox(height: 32),
                     HistoryListSection(),
+                    SizedBox(height: 32),
+                    UserRatingSection(),
+                    SizedBox(height: 12),
                   ],
                 ),
               ),

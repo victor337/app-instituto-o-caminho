@@ -16,7 +16,7 @@ class HistoryListSectionCubit extends Cubit<HistoryListSectionState> {
   Future<void> init() async {
     emit(HistoryListSectionLoading());
 
-    final result = await _historyRepository.getHistory();
+    final result = await _historyRepository.getHistoryOfUser();
 
     result.fold(
       (error) {

@@ -102,7 +102,7 @@ class ActivityDetailsPageCubit extends Cubit<ActivityDetailsPageState> {
         );
       },
       (_) {
-        emit(state.copyWith(isSubscribe: false));
+        emit(state.copyWith(isSubscribe: false, hasVacancies: true));
         view?.successDialog(
           'Sua inscrição foi cancelada com sucesso, sentiremos sua falta!',
         );

@@ -6,7 +6,7 @@ import 'package:instituto_o_caminho/features/history/domain/entities/history.dar
 import 'package:instituto_o_caminho/features/history/domain/results/get_history_result.dart';
 
 abstract class HistoryRepository {
-  Future<Either<GetHistoryResult, List<History>>> getHistory();
+  Future<Either<GetHistoryResult, List<History>>> getHistoryOfUser();
 }
 
 class HistoryRepositoryImpl implements HistoryRepository {
@@ -19,7 +19,7 @@ class HistoryRepositoryImpl implements HistoryRepository {
   final LoggerRepository loggerRepository;
 
   @override
-  Future<Either<GetHistoryResult, List<History>>> getHistory() async {
+  Future<Either<GetHistoryResult, List<History>>> getHistoryOfUser() async {
     final currentUserId = authRepository.currentUser!.id;
 
     try {
