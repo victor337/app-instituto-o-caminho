@@ -47,7 +47,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage>
             }
             return SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -59,16 +59,16 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage>
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(height: 24),
-                    Text(
+                    const SizedBox(height: 24),
+                    const Text(
                       'Sobre',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: constLight,
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     Text(
                       state.activity!.description,
                       style: const TextStyle(
@@ -76,21 +76,21 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage>
                         fontSize: 16,
                       ),
                     ),
-                    SizedBox(height: 24),
-                    Text(
+                    const SizedBox(height: 24),
+                    const Text(
                       'Detalhes',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: constLight,
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           'Professor: ',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: constLight,
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -107,9 +107,9 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage>
                     ),
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           'Data: ',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: constLight,
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -126,9 +126,9 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage>
                     ),
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           'Endereço: ',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: constLight,
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -145,9 +145,9 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage>
                     ),
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           'Duração: ',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: constLight,
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -162,7 +162,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage>
                         ),
                       ],
                     ),
-                    SizedBox(height: 24),
+                    const SizedBox(height: 24),
                     const Text(
                       'Fotos: ',
                       style: TextStyle(
@@ -171,7 +171,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage>
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     SizedBox(
                       height: 100,
                       child: ListView.separated(
@@ -203,11 +203,13 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage>
                         },
                       ),
                     ),
-                    SizedBox(height: 24),
+                    const SizedBox(height: 24),
                     PrimaryButton(
                       title: state.buttonTitle,
+                      isLoading: state.buttonIsLoading,
                       onPressed: controller.buttonPressed,
                     ),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
@@ -242,6 +244,84 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage>
               title: 'Fechar',
               onPressed: () {
                 context.pop();
+                context.pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void dialogError(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AppAlertDialog(
+          canPopScope: false,
+          type: ModalAlertType.error,
+          title: title,
+          description: message,
+          actions: [
+            PrimaryButton(
+              title: 'Entendi',
+              onPressed: () {
+                context.pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void noVacancies() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AppAlertDialog(
+          canPopScope: false,
+          type: ModalAlertType.error,
+          title: 'Sem vagas',
+          description:
+              'Esta atividade não possui mais vagas, mas você ainda pode entrar na lista de espera',
+          actions: [
+            PrimaryButton(
+              title: 'Entrar na lista de espera',
+              onPressed: () {
+                context.pop();
+                controller.joinWaitList();
+              },
+            ),
+            const SizedBox(height: 16),
+            SecondaryButton(
+              title: 'Entendi',
+              onPressed: () {
+                context.pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void successDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AppAlertDialog(
+          canPopScope: false,
+          type: ModalAlertType.error,
+          title: 'Sucesso!',
+          description: message,
+          actions: [
+            PrimaryButton(
+              title: 'Entendi',
+              onPressed: () {
                 context.pop();
               },
             ),

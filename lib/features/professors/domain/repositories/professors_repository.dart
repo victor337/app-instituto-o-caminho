@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:instituto_o_caminho/core/analytics/logger_repository.dart';
 import 'package:instituto_o_caminho/features/professors/domain/entities/professor.dart';
 import 'package:instituto_o_caminho/features/professors/domain/results/get_professor_data_by_id_result.dart';
 
@@ -10,6 +11,9 @@ abstract class ProfessorsRepository {
 }
 
 class ProfessorsRepositoryImpl implements ProfessorsRepository {
+  ProfessorsRepositoryImpl({required this.loggerRepository});
+  final LoggerRepository loggerRepository;
+
   @override
   Future<Either<GetProfessorDataByIdResult, Professor>> getProfessorDataById(
     String id,
@@ -21,6 +25,7 @@ class ProfessorsRepositoryImpl implements ProfessorsRepository {
 
       return Right(Professor.fromJson(response.data()!));
     } catch (e, s) {
+      loggerRepository.logInfo(e, s, 'Buscar professor pelo ID');
       return const Left(GetProfessorDataByIdResult.failed);
     }
   }

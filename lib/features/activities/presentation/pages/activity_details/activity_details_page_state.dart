@@ -8,6 +8,7 @@ class ActivityDetailsPageState {
     this.isWaitList = false,
     this.hasVacancies = false,
     this.professor,
+    this.buttonIsLoading = false,
   });
 
   ActivityDetailsPageState copyWith({
@@ -17,6 +18,7 @@ class ActivityDetailsPageState {
     bool? isWaitList,
     bool? hasVacancies,
     Professor? professor,
+    bool? buttonIsLoading,
   }) {
     return ActivityDetailsPageState(
       isLoading: isLoading ?? this.isLoading,
@@ -25,6 +27,7 @@ class ActivityDetailsPageState {
       isWaitList: isWaitList ?? this.isWaitList,
       hasVacancies: hasVacancies ?? this.hasVacancies,
       professor: professor ?? this.professor,
+      buttonIsLoading: buttonIsLoading ?? this.buttonIsLoading,
     );
   }
 
@@ -48,4 +51,5 @@ class ActivityDetailsPageState {
   final bool isWaitList;
   final Activity? activity;
   final Professor? professor;
+  final bool buttonIsLoading;
 }

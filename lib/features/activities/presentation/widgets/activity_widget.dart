@@ -20,14 +20,14 @@ class ActivityWidget extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: alertBackground,
+          color: modalBackground,
           borderRadius: BorderRadius.circular(16),
           boxShadow: const [
             BoxShadow(
-              color: Colors.black26,
-              spreadRadius: 2,
-              blurRadius: 10,
-              offset: Offset(0, 1), // changes position of shadow
+              color: Colors.black,
+              spreadRadius: 0.1,
+              blurRadius: 5,
+              offset: Offset(0, 2), // changes position of shadow
             ),
           ],
         ),

@@ -1,70 +1,76 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instituto_o_caminho/core/di/injection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instituto_o_caminho/core/theme/app_colors.dart';
 import 'package:instituto_o_caminho/features/activities/presentation/widgets/activities_list/activities_list_section.dart';
-import 'package:instituto_o_caminho/features/auth/domain/repositories/auth_repository.dart';
+import 'package:instituto_o_caminho/features/history/presentation/components/history_list_section/history_list_section.dart';
+import 'package:instituto_o_caminho/features/home/presentation/pages/home_page_cubit.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final AuthRepository authRepository = getIt();
+  State<HomePage> createState() => _HomePageState();
+}
 
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      drawer: const Drawer(),
-      appBar: AppBar(
-        centerTitle: false,
-        backgroundColor: backgroundColor,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              'Olá, ${authRepository.currentUser!.name.split(' ')[0]}!',
-              style: const TextStyle(
-                color: constLight,
-                fontSize: 20,
+class _HomePageState extends State<HomePage> {
+  late HomePageCubit controller;
+
+  @override
+  void initState() {
+    controller = HomePageCubit();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider.value(
+      value: controller,
+      child: BlocBuilder<HomePageCubit, HomePageState>(
+        builder: (_, state) {
+          if (state.isLoading) return const SizedBox.shrink();
+
+          return Scaffold(
+            backgroundColor: backgroundColor,
+            drawer: const Drawer(),
+            appBar: AppBar(
+              centerTitle: false,
+              backgroundColor: backgroundColor,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Olá, ${controller.userName}',
+                    style: const TextStyle(
+                      color: constLight,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  const CircleAvatar(),
+                ],
               ),
             ),
-            const SizedBox(width: 16),
-            CircleAvatar(),
-          ],
-        ),
-      ),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 24),
-            Text(
-              'Nossas atividades',
-              style: TextStyle(
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  controller.refreshPage();
+                },
                 color: constLight,
-                fontSize: 24,
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: const [
+                    SizedBox(height: 24),
+                    ActivitiesListSection(),
+                    SizedBox(height: 32),
+                    HistoryListSection(),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 8),
-            ActivitiesListSection(),
-            SizedBox(height: 32),
-            Text(
-              'Suas aulas',
-              style: TextStyle(
-                color: constLight,
-                fontSize: 24,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Você não se cadastrou em nenhuma aula',
-              style: TextStyle(
-                color: constLight,
-                fontSize: 16,
-              ),
-            )
-          ],
-        ),
+          );
+        },
       ),
     );
   }

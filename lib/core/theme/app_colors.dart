@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
 const backgroundColor = Color(0xff121212);
-const alertBackground = Color(0xff3B3E52);
+const modalBackground = Color(0xff3B3E52);
+const sectionColor = Color(0xff201F25);
 const constLight = Color(0xffffffff);

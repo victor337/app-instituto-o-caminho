@@ -1,0 +1,4 @@
+enum SubscribeActivityResult {
+  failed,
+  isFull,
+}

@@ -42,8 +42,8 @@ class AppAlertDialog extends StatelessWidget {
     return PopScope(
       canPop: canPopScope,
       child: AlertDialog(
-        surfaceTintColor: alertBackground,
-        backgroundColor: alertBackground,
+        surfaceTintColor: modalBackground,
+        backgroundColor: modalBackground,
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,

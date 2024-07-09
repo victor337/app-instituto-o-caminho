@@ -36,19 +36,40 @@ class _ActivitiesListSectionState extends State<ActivitiesListSection> {
               ),
             );
           } else if (state is ActivitiesListDone) {
-            return GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 1.5,
+            return Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: sectionColor,
+                borderRadius: BorderRadius.circular(16),
               ),
-              shrinkWrap: true,
-              itemCount: state.activities.length,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (_, i) {
-                return ActivityWidget(activity: state.activities[i]);
-              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    'Nossas atividades',
+                    style: TextStyle(
+                      color: constLight,
+                      fontSize: 24,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 1.5,
+                    ),
+                    shrinkWrap: true,
+                    itemCount: state.activities.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (_, i) {
+                      return ActivityWidget(activity: state.activities[i]);
+                    },
+                  ),
+                ],
+              ),
             );
           }
           return const SizedBox.shrink();

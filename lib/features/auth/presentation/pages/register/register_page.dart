@@ -62,18 +62,20 @@ class _RegisterPageState extends State<RegisterPage>
                     duration: const Duration(
                       milliseconds: 100,
                     ),
-                    child: Container(
-                      clipBehavior: Clip.antiAlias,
-                      padding: const EdgeInsets.all(12),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      child: const Icon(
-                        Icons.arrow_right,
-                        color: backgroundColor,
-                      ),
-                    ),
+                    child: state.currentFormIsValid
+                        ? Container(
+                            clipBehavior: Clip.antiAlias,
+                            padding: const EdgeInsets.all(12),
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                            child: const Icon(
+                              Icons.arrow_right,
+                              color: backgroundColor,
+                            ),
+                          )
+                        : const SizedBox.shrink(),
                   );
                 },
               ),
