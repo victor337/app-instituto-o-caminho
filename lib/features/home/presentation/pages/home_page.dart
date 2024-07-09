@@ -17,7 +17,6 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: false,
         backgroundColor: backgroundColor,
-        iconTheme: const IconThemeData(color: constLight),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [

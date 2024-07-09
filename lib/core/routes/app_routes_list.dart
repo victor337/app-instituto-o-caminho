@@ -10,6 +10,11 @@ class AppRoutesList {
     path: 'register',
     fullPath: '/onboarding/register',
   );
+
+  static AppRouteWithId activityDetails = AppRouteWithId(
+    path: 'activity-details/:id',
+    buildFullPath: (id) => '/activity-details/$id',
+  );
 }
 
 class AppRoute {

@@ -41,7 +41,7 @@ class _ActivitiesListSectionState extends State<ActivitiesListSection> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
-                childAspectRatio: 2,
+                childAspectRatio: 1.5,
               ),
               shrinkWrap: true,
               itemCount: state.activities.length,

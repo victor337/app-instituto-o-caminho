@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:instituto_o_caminho/core/routes/app_routes_list.dart';
+import 'package:instituto_o_caminho/features/activities/presentation/pages/activity_details/activity_details_page.dart';
 import 'package:instituto_o_caminho/features/auth/presentation/pages/login/login_page.dart';
 import 'package:instituto_o_caminho/features/auth/presentation/pages/register/register_page.dart';
 import 'package:instituto_o_caminho/features/home/presentation/pages/home_page.dart';
@@ -26,6 +27,19 @@ class AppRoutes {
             child: const HomePage(),
           );
         },
+        routes: [
+          GoRoute(
+            path: AppRoutesList.activityDetails.path,
+            pageBuilder: (context, state) {
+              final activityId = state.pathParameters['id'] as String;
+
+              return CustomPage(
+                state: state,
+                child: ActivityDetailsPage(activityId: activityId),
+              );
+            },
+          )
+        ],
       ),
       GoRoute(
         path: AppRoutesList.onboarding,

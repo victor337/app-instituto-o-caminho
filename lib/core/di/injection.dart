@@ -18,5 +18,7 @@ Future<void> bootStrap(AppFlavor flavor) async {
   );
 
   getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl());
-  getIt.registerFactory<ActivitiesRepository>(() => ActivitiesRepositoryImpl());
+  getIt.registerFactory<ActivitiesRepository>(() => ActivitiesRepositoryImpl(
+        authRepository: getIt<AuthRepository>(),
+      ));
 }
