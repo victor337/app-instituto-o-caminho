@@ -6,6 +6,7 @@ import 'package:instituto_o_caminho/features/auth/presentation/pages/login/login
 import 'package:instituto_o_caminho/features/auth/presentation/pages/register/register_page.dart';
 import 'package:instituto_o_caminho/features/home/presentation/pages/home_page.dart';
 import 'package:instituto_o_caminho/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:instituto_o_caminho/features/profile/presentation/pages/edit_profile/edit_profile_page.dart';
 
 class AppRoutes {
   static final protectedRoutes = [
@@ -36,6 +37,15 @@ class AppRoutes {
               return CustomPage(
                 state: state,
                 child: ActivityDetailsPage(activityId: activityId),
+              );
+            },
+          ),
+          GoRoute(
+            path: AppRoutesList.profile.path,
+            pageBuilder: (context, state) {
+              return CustomPage(
+                state: state,
+                child: const EditProfilePage(),
               );
             },
           )

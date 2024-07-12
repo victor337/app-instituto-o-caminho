@@ -1,16 +1,22 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:instituto_o_caminho/core/analytics/logger_repository.dart';
 import 'package:instituto_o_caminho/features/auth/domain/entities/app_user.dart';
 import 'package:instituto_o_caminho/features/auth/domain/entities/register_user_data.dart';
 import 'package:instituto_o_caminho/features/auth/domain/results/login_result.dart';
 import 'package:instituto_o_caminho/features/auth/domain/results/register_user_result.dart';
+import 'package:path_provider/path_provider.dart';
 
 abstract class AuthRepository {
   AppUser? get currentUser;
   Future<Either<RegisterUserResult, bool>> registerUser(RegisterUserData data);
   Future<Either<LoginResult, AppUser>> login(String email, String pass);
+  Future<void> logout();
+  Future<bool> updateUserData(AppUser data);
 }
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -71,7 +77,13 @@ class AuthRepositoryImpl implements AuthRepository {
       final doc =
           await firestore.collection('users').doc(result.user!.uid).get();
 
+      final isAdmin = await firestore
+          .collection('admins')
+          .where('userId', isEqualTo: result.user!.uid)
+          .get();
+
       _user = AppUser.fromJson(doc.data()!);
+      _user!.isAdmin = isAdmin.docs.isNotEmpty;
       return Right(_user!);
     } on FirebaseAuthException catch (e, s) {
       if (e.code == 'wrong-password') {
@@ -86,6 +98,53 @@ class AuthRepositoryImpl implements AuthRepository {
     } catch (e, s) {
       loggerRepository.logInfo(e, s, 'Login de usuário');
       return const Left(LoginResult.failed);
+    }
+  }
+
+  @override
+  Future<void> logout() async {
+    _user = null;
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    await firebaseAuth.signOut();
+  }
+
+  Future<void> tryDeletePreviousImage() async {
+    try {
+      final storageRef = FirebaseStorage.instance.ref();
+      final imageRef = storageRef.child("images/${_user!.id}/profile_pic.png");
+      await imageRef.delete();
+    } on FirebaseException catch (e, s) {
+      if (e.code != 'storage/object-not-found') {
+        loggerRepository.logInfo(e, s, 'Excluir foto de perfil');
+      }
+    } catch (e, s) {
+      loggerRepository.logInfo(e, s, 'Excluir foto de perfil');
+    }
+  }
+
+  @override
+  Future<bool> updateUserData(AppUser data) async {
+    try {
+      await tryDeletePreviousImage();
+
+      final storageRef = FirebaseStorage.instance.ref();
+      final imageRef = storageRef.child("images/${_user!.id}/profile_pic.png");
+
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String filePath = '${appDocDir.absolute}/profile_pic.png';
+      File file = File(filePath);
+
+      final uploaded = await imageRef.putFile(file);
+
+      final firestore = FirebaseFirestore.instance;
+
+      data.image = uploaded.ref.fullPath;
+      await firestore.collection('users').doc(_user!.id).update(data.toMap());
+      _user = data;
+      return true;
+    } catch (e, s) {
+      loggerRepository.logInfo(e, s, 'Editar usuário');
+      return false;
     }
   }
 }

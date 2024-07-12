@@ -43,14 +43,14 @@ class _ActivitiesListSectionState extends State<ActivitiesListSection> {
                   'Atividades',
                   style: TextStyle(
                     color: constLight,
-                    fontSize: 24,
+                    fontSize: 20,
                   ),
                 ),
                 const Text(
                   'Aqui estão todas as atividades fornecidas pelo instituto',
                   style: TextStyle(
                     color: greyText,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                 ),
                 const SizedBox(height: 8),

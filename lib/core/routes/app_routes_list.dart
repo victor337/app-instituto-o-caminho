@@ -15,6 +15,16 @@ class AppRoutesList {
     path: 'activity-details/:id',
     buildFullPath: (id) => '/activity-details/$id',
   );
+
+  static const punishments = AppRoute(
+    path: 'punishments',
+    fullPath: '/punishments',
+  );
+
+  static const profile = AppRoute(
+    path: 'profile',
+    fullPath: '/profile',
+  );
 }
 
 class AppRoute {

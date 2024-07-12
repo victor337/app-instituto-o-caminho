@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instituto_o_caminho/components/empty_list.dart';
 import 'package:instituto_o_caminho/core/extensions/datetime_extension.dart';
 import 'package:instituto_o_caminho/core/theme/app_colors.dart';
 import 'package:instituto_o_caminho/features/history/presentation/components/history_list_section/history_list_section_cubit.dart';
@@ -35,10 +36,7 @@ class _HistoryListSectionState extends State<HistoryListSection> {
             );
           } else if (state is HistoryListSectionDone) {
             if (state.history.isEmpty) {
-              return const Text(
-                'Você não possui histórico por enquanto',
-                style: TextStyle(color: constLight, fontSize: 16),
-              );
+              return const EmptyList();
             }
 
             return Column(
@@ -48,14 +46,14 @@ class _HistoryListSectionState extends State<HistoryListSection> {
                   'Histórico de presença',
                   style: TextStyle(
                     color: constLight,
-                    fontSize: 24,
+                    fontSize: 20,
                   ),
                 ),
                 const Text(
                   'As aulas que você compareceu ou não vão aparecer aqui',
                   style: TextStyle(
                     color: greyText,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -98,13 +96,6 @@ class _HistoryListSectionState extends State<HistoryListSection> {
                             ),
                             child: Row(
                               children: [
-                                Text(
-                                  '${item.date.ddMMyyyy()} - ',
-                                  style: const TextStyle(
-                                    color: constLight,
-                                    fontSize: 16,
-                                  ),
-                                ),
                                 Text(
                                   '${item.date.ddMMyyyy()} - ',
                                   style: const TextStyle(
