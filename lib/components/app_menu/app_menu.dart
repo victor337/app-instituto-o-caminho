@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instituto_o_caminho/components/app_menu/app_menu_cubit.dart';
 import 'package:instituto_o_caminho/components/app_menu/components/app_menu_item.dart';
 import 'package:instituto_o_caminho/core/extensions/context_extension.dart';
 import 'package:instituto_o_caminho/core/routes/app_routes_list.dart';
 import 'package:instituto_o_caminho/core/theme/app_colors.dart';
-import 'package:instituto_o_caminho/features/home/presentation/pages/home_page_cubit.dart';
 
 class AppMenu extends StatefulWidget {
   const AppMenu({super.key});
@@ -93,7 +91,9 @@ class _AppMenuState extends State<AppMenu> {
             AppMenuItem(
               title: 'Cadastrar atividade',
               iconData: Icons.star,
-              onPressed: () {},
+              onPressed: () {
+                context.push(AppRoutesList.addActivity.fullPath);
+              },
             ),
             AppMenuItem(
               title: 'Cadastrar professor',
@@ -102,7 +102,7 @@ class _AppMenuState extends State<AppMenu> {
             ),
             AppMenuItem(
               title: 'Cancelar aula',
-              iconData: Icons.book,
+              iconData: Icons.cancel,
               onPressed: () {},
             ),
           ],

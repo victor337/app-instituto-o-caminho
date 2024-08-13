@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:instituto_o_caminho/core/di/injection.dart';
-import 'package:instituto_o_caminho/features/history/domain/entities/history.dart';
-import 'package:instituto_o_caminho/features/history/domain/repositories/history_repository.dart';
 import 'package:instituto_o_caminho/features/punishments/domain/entities/punishment.dart';
 import 'package:instituto_o_caminho/features/punishments/domain/repositories/punishments_repository.dart';
 import 'package:meta/meta.dart';

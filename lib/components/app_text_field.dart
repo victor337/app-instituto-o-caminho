@@ -42,8 +42,7 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
 
   @override
   void initState() {
-    textEditingController =
-        widget.textEditingController ?? TextEditingController();
+    textEditingController = widget.textEditingController ?? TextEditingController();
     textEditingController.text = widget.initialValue ?? '';
     super.initState();
   }
@@ -54,14 +53,13 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
   Widget build(BuildContext context) {
     TextStyle getContentStyle() {
       if (widget.isEnabled) {
-        return TextStyle(
+        return const TextStyle(
           color: constLight,
         );
       }
-      return TextStyle(
+      return const TextStyle(
         color: sectionColor,
       );
-      ;
     }
 
     TextStyle getHintStyle() {
@@ -79,9 +77,9 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
     }
 
     TextStyle getTitleStyle() {
-      return TextStyle(
+      return const TextStyle(
         fontSize: 16,
-        color: greyText,
+        color: lightMedium,
       );
     }
 
@@ -117,14 +115,15 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
               maxLines: widget.maxLines,
               controller: textEditingController,
               inputFormatters: widget.inputFormatters,
-              textCapitalization:
-                  widget.textCapitalization ?? TextCapitalization.sentences,
+              textCapitalization: widget.textCapitalization ?? TextCapitalization.sentences,
               keyboardType: widget.keyboardType,
               decoration: InputDecoration(
                 hintText: widget.hint,
+                hintStyle: const TextStyle(
+                  color: greyText,
+                ),
                 border: InputBorder.none,
-                suffixIcon: widget.showRemoveTextOption &&
-                        textEditingController.text.isNotEmpty
+                suffixIcon: widget.showRemoveTextOption && textEditingController.text.isNotEmpty
                     ? InkWell(
                         onTap: () {
                           setState(() {
@@ -148,7 +147,6 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
             ),
           ),
         ),
-        SizedBox(height: 16),
       ],
     );
   }
@@ -233,7 +231,6 @@ class Tokens {
   BorderRadius get borderRadiusMd => BorderRadius.circular(16);
   BorderRadius get borderRadiusLg => BorderRadius.circular(24);
   BorderRadius get borderRadiusPill => BorderRadius.circular(500);
-  // TODO: VALIDAR
   BorderRadius get borderRadiusCircular => BorderRadius.circular(100);
 
   /// BorderWidth

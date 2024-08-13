@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage> implements LoginPageView {
   }
 
   @override
-  void popPage() {
+  Future<void> popPage() async {
     Navigator.of(context).pop();
   }
 

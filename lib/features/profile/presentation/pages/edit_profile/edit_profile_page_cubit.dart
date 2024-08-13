@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:instituto_o_caminho/core/di/injection.dart';
+import 'package:instituto_o_caminho/core/extensions/string_extension.dart';
 import 'package:instituto_o_caminho/features/auth/domain/repositories/auth_repository.dart';
 import 'package:instituto_o_caminho/features/profile/presentation/pages/edit_profile/edit_profile_page_view.dart';
 

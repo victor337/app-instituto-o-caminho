@@ -30,4 +30,12 @@ class EditProfilePageState {
   final bool isUseLocalImage;
   final String? phone;
   final bool isLoading;
+
+  bool get nameIsValid {
+    return name != null && name!.trim().split(' ').length >= 2;
+  }
+
+  bool get phoneIsValid {
+    return phone != null && phone!.trim().onlyNumbers.length == 11;
+  }
 }

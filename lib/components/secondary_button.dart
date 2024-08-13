@@ -21,7 +21,7 @@ class SecondaryButton extends StatelessWidget {
           color: constLight,
           width: 2,
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
@@ -29,7 +29,7 @@ class SecondaryButton extends StatelessWidget {
           elevation: 0,
           backgroundColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
         child: isLoading

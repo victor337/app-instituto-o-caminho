@@ -11,6 +11,11 @@ class AppRoutesList {
     fullPath: '/onboarding/register',
   );
 
+  static const addActivity = AppRoute(
+    path: 'add-activity',
+    fullPath: '/add-activity',
+  );
+
   static AppRouteWithId activityDetails = AppRouteWithId(
     path: 'activity-details/:id',
     buildFullPath: (id) => '/activity-details/$id',

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instituto_o_caminho/components/empty_list.dart';
-import 'package:instituto_o_caminho/core/extensions/context_extension.dart';
 import 'package:instituto_o_caminho/core/extensions/datetime_extension.dart';
-import 'package:instituto_o_caminho/core/routes/app_routes_list.dart';
 import 'package:instituto_o_caminho/core/theme/app_colors.dart';
 import 'package:instituto_o_caminho/features/punishments/presentation/components/punishments_section/punishments_section_cubit.dart';
 
@@ -56,7 +54,7 @@ class _PunishmentsSectionState extends State<PunishmentsSection> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: sectionColor,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Builder(
                   builder: (_) {

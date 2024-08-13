@@ -2,8 +2,11 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instituto_o_caminho/components/app_alert_dialog.dart';
 import 'package:instituto_o_caminho/components/app_text_field.dart';
 import 'package:instituto_o_caminho/components/primary_button.dart';
+import 'package:instituto_o_caminho/components/secondary_button.dart';
+import 'package:instituto_o_caminho/core/extensions/context_extension.dart';
 import 'package:instituto_o_caminho/core/theme/app_colors.dart';
 import 'package:instituto_o_caminho/features/profile/presentation/pages/edit_profile/edit_profile_page_cubit.dart';
 import 'package:instituto_o_caminho/features/profile/presentation/pages/edit_profile/edit_profile_page_view.dart';
@@ -93,6 +96,35 @@ class _EditProfilePageState extends State<EditProfilePage>
 
   @override
   void initError() {
-    // TODO: implement initError
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AppAlertDialog(
+          canPopScope: false,
+          type: ModalAlertType.error,
+          title: 'Ops, tivemos um problema',
+          description:
+              'Houve um erro ao buscar os dados do seu perfil, por favor tente novamente',
+          actions: [
+            PrimaryButton(
+              title: 'Tentar novamente',
+              onPressed: () {
+                context.pop();
+                controller.init();
+              },
+            ),
+            const SizedBox(height: 16),
+            SecondaryButton(
+              title: 'Fechar',
+              onPressed: () {
+                context.pop();
+                context.pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  
   }
 }

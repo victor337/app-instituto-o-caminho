@@ -58,7 +58,7 @@ class _ActivitiesListSectionState extends State<ActivitiesListSection> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: sectionColor,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
