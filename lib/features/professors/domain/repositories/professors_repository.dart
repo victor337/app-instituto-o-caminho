@@ -8,6 +8,8 @@ abstract class ProfessorsRepository {
   Future<Either<GetProfessorDataByIdResult, Professor>> getProfessorDataById(
     String id,
   );
+
+  Future<Either<GetProfessorDataByIdResult, List<Professor>>> getProfessors();
 }
 
 class ProfessorsRepositoryImpl implements ProfessorsRepository {
@@ -26,6 +28,22 @@ class ProfessorsRepositoryImpl implements ProfessorsRepository {
       return Right(Professor.fromJson(response.data()!));
     } catch (e, s) {
       loggerRepository.logInfo(e, s, 'Buscar professor pelo ID');
+      return const Left(GetProfessorDataByIdResult.failed);
+    }
+  }
+
+  @override
+  Future<Either<GetProfessorDataByIdResult, List<Professor>>>
+      getProfessors() async {
+    try {
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      final response = await firestore.collection('professors').get();
+
+      return Right(
+          [for (final p in response.docs) Professor.fromJson(p.data())]);
+    } catch (e, s) {
+      loggerRepository.logInfo(e, s, 'Buscar professores');
       return const Left(GetProfessorDataByIdResult.failed);
     }
   }

@@ -6,10 +6,10 @@ class AddActivityPageState {
     this.description,
     this.professor,
     this.images,
-    this.date,
-    this.duration,
+    this.dates,
+    this.hour,
     this.vacancies,
-    this.isLoading,
+    this.isLoading = false,
     this.buttonIsLoading,
   });
 
@@ -20,8 +20,8 @@ class AddActivityPageState {
     String? description,
     Professor? professor,
     List<String>? images,
-    String? date,
-    String? duration,
+    List<String>? dates,
+    String? hour,
     int? vacancies,
   }) {
     return AddActivityPageState(
@@ -29,21 +29,21 @@ class AddActivityPageState {
       description: description ?? this.description,
       professor: professor ?? this.professor,
       images: images ?? this.images,
-      date: date ?? this.date,
-      duration: duration ?? this.duration,
+      dates: dates ?? this.dates,
+      hour: hour ?? this.hour,
       vacancies: vacancies ?? this.vacancies,
       isLoading: isLoading ?? this.isLoading,
       buttonIsLoading: buttonIsLoading ?? this.buttonIsLoading,
     );
   }
 
-  final bool? isLoading;
+  final bool isLoading;
   final bool? buttonIsLoading;
   final String? title;
   final String? description;
   final Professor? professor;
   final List<String>? images;
-  final String? date;
-  final String? duration;
+  final List<String>? dates;
+  final String? hour;
   final int? vacancies;
 }

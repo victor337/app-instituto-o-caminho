@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instituto_o_caminho/components/app_text_field.dart';
+import 'package:instituto_o_caminho/components/primary_button.dart';
 import 'package:instituto_o_caminho/core/theme/app_colors.dart';
 import 'package:instituto_o_caminho/features/activities/presentation/pages/add_activity/add_activity_page_cubit.dart';
 
@@ -31,12 +32,16 @@ class _AddActivityPageState extends State<AddActivityPage> {
         value: controller,
         child: BlocBuilder<AddActivityPageCubit, AddActivityPageState>(
           builder: (context, state) {
+            if (state.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+              child: ListView(
                 children: [
-                  const SizedBox(height: 24),
                   const Text(
                     'Cadastrar atividade',
                     style: TextStyle(
@@ -80,19 +85,27 @@ class _AddActivityPageState extends State<AddActivityPage> {
                             color: constLight,
                           ),
                         ),
+                        const SizedBox(height: 4),
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           color: modalBackground,
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton(
                               dropdownColor: sectionColor,
-                              items: controller.proffessorsOptions.map((p) {
+                              items: controller.professorsOptions.map((p) {
                                 return DropdownMenuItem(
                                   child: Text(p.name),
+                                  value: p,
                                 );
                               }).toList(),
+                              hint: Text(
+                                'Selecione',
+                                style: TextStyle(
+                                  color: constLight,
+                                ),
+                              ),
                               value: state.professor,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: constLight,
                               ),
                               onChanged: (value) {
@@ -104,7 +117,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
                           ),
                         ),
                         const SizedBox(height: 24),
-                        Text(
+                        const Text(
                           'Ocorre toda',
                           style: TextStyle(
                             color: constLight,
@@ -117,52 +130,89 @@ class _AddActivityPageState extends State<AddActivityPage> {
                           children: [
                             for (final day in controller.days)
                               InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: constLight),
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: sectionColor,
-                                  ),
-                                  child: Text(
-                                    day,
-                                    style: const TextStyle(
-                                      color: constLight,
-                                    ),
-                                  ),
+                                onTap: () {
+                                  controller.setDates(day);
+                                },
+                                child: BlocBuilder<AddActivityPageCubit,
+                                    AddActivityPageState>(
+                                  builder: (_, state) {
+                                    final isSelected =
+                                        state.dates?.contains(day) ?? false;
+
+                                    return Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: constLight),
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: isSelected
+                                            ? modalBackground
+                                            : sectionColor,
+                                      ),
+                                      child: Text(
+                                        day,
+                                        style: const TextStyle(
+                                          color: constLight,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                           ],
                         ),
                         const SizedBox(height: 24),
+                        const Text(
+                          'Começando às',
+                          style: TextStyle(
+                            color: constLight,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
                         Wrap(
                           spacing: 17,
                           runSpacing: 10,
                           children: [
                             for (final hour in controller.hours)
                               InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: constLight),
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: sectionColor,
-                                  ),
-                                  child: Text(
-                                    hour,
-                                    style: const TextStyle(
-                                      color: constLight,
-                                    ),
-                                  ),
+                                onTap: () {
+                                  controller.setHour(hour);
+                                },
+                                child: BlocBuilder<AddActivityPageCubit,
+                                    AddActivityPageState>(
+                                  builder: (_, state) {
+                                    final isSelected = state.hour == hour;
+
+                                    return Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: constLight),
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: isSelected
+                                            ? modalBackground
+                                            : sectionColor,
+                                      ),
+                                      child: Text(
+                                        hour,
+                                        style: const TextStyle(
+                                          color: constLight,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                           ],
                         ),
+                        const SizedBox(height: 12),
                       ],
                     ),
                   ),
+                  const SizedBox(height: 24),
+                  PrimaryButton(
+                    title: 'Cadastrar',
+                    onPressed: controller.sendForm,
+                  ),
+                  const SizedBox(height: 24),
                 ],
               ),
             );
