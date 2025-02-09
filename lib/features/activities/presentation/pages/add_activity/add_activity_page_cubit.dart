@@ -62,10 +62,10 @@ class AddActivityPageCubit extends Cubit<AddActivityPageState> {
   }
 
   Future<void> sendForm() async {
-    if(state.hasErrors){
+    if (state.hasErrors) {
       return emit(state.copyWith(showErrors: true));
     }
 
-    final result = await _activitiesRepository.getActivities();
+    await _activitiesRepository.getActivities();
   }
 }

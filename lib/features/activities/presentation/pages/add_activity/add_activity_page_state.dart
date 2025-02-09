@@ -11,6 +11,7 @@ class AddActivityPageState {
     this.vacancies,
     this.isLoading = false,
     this.buttonIsLoading,
+    this.showErrors = false,
   });
 
   AddActivityPageState copyWith({
@@ -23,6 +24,7 @@ class AddActivityPageState {
     List<String>? dates,
     String? hour,
     int? vacancies,
+    bool? showErrors,
   }) {
     return AddActivityPageState(
       title: title ?? this.title,
@@ -34,6 +36,7 @@ class AddActivityPageState {
       vacancies: vacancies ?? this.vacancies,
       isLoading: isLoading ?? this.isLoading,
       buttonIsLoading: buttonIsLoading ?? this.buttonIsLoading,
+      showErrors: showErrors ?? this.showErrors,
     );
   }
 
@@ -46,4 +49,9 @@ class AddActivityPageState {
   final List<String>? dates;
   final String? hour;
   final int? vacancies;
+  final bool showErrors;
+
+  bool get hasErrors {
+    return false;
+  }
 }

@@ -71,7 +71,9 @@ extension DateTimeExtension on DateTime {
     while (first.isBefore(second)) {
       if (first.hour >= 8 &&
           first.hour <= 17 &&
-          ![6, 7].contains(first.weekday)) minutes += 1;
+          ![6, 7].contains(first.weekday)) {
+        minutes += 1;
+      }
       first = first.add(const Duration(minutes: 1));
     }
 

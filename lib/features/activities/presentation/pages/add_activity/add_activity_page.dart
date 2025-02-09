@@ -94,11 +94,11 @@ class _AddActivityPageState extends State<AddActivityPage> {
                               dropdownColor: sectionColor,
                               items: controller.professorsOptions.map((p) {
                                 return DropdownMenuItem(
-                                  child: Text(p.name),
                                   value: p,
+                                  child: Text(p.name),
                                 );
                               }).toList(),
-                              hint: Text(
+                              hint: const Text(
                                 'Selecione',
                                 style: TextStyle(
                                   color: constLight,

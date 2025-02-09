@@ -42,7 +42,8 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
 
   @override
   void initState() {
-    textEditingController = widget.textEditingController ?? TextEditingController();
+    textEditingController =
+        widget.textEditingController ?? TextEditingController();
     textEditingController.text = widget.initialValue ?? '';
     super.initState();
   }
@@ -60,20 +61,6 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
       return const TextStyle(
         color: sectionColor,
       );
-    }
-
-    TextStyle getHintStyle() {
-      if (widget.isEnabled) {
-        if (widget.errorText != null) {
-          return theme.typography.labelNegativeXxsSemiBoldStyle;
-        }
-
-        if (hasFocus) {
-          return theme.typography.labelLowXxsSemiBoldStyle;
-        }
-        return theme.typography.labelLowXxsSemiBoldStyle;
-      }
-      return theme.typography.labelDisableXxsSemiBoldStyle;
     }
 
     TextStyle getTitleStyle() {
@@ -115,7 +102,8 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
               maxLines: widget.maxLines,
               controller: textEditingController,
               inputFormatters: widget.inputFormatters,
-              textCapitalization: widget.textCapitalization ?? TextCapitalization.sentences,
+              textCapitalization:
+                  widget.textCapitalization ?? TextCapitalization.sentences,
               keyboardType: widget.keyboardType,
               decoration: InputDecoration(
                 hintText: widget.hint,
@@ -123,7 +111,8 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
                   color: greyText,
                 ),
                 border: InputBorder.none,
-                suffixIcon: widget.showRemoveTextOption && textEditingController.text.isNotEmpty
+                suffixIcon: widget.showRemoveTextOption &&
+                        textEditingController.text.isNotEmpty
                     ? InkWell(
                         onTap: () {
                           setState(() {

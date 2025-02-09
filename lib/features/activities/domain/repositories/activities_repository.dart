@@ -18,7 +18,7 @@ abstract class ActivitiesRepository {
   Future<Either<CancelSubscriptionResult, bool>> cancelSubscription(String id);
   Future<Either<JoinWaitListResult, bool>> joinWaitList(String id);
   Future<Either<RemoveFromWaitListResult, bool>> removeFromWaitList(String id);
-  Future<void> createActivity();
+  Future<Either<RemoveFromWaitListResult, bool>> createActivity();
 }
 
 class ActivitiesRepositoryImpl implements ActivitiesRepository {
@@ -196,7 +196,8 @@ class ActivitiesRepositoryImpl implements ActivitiesRepository {
 
   @override
   Future<Either<RemoveFromWaitListResult, bool>> removeFromWaitList(
-      String id,) async {
+    String id,
+  ) async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
       final user = authRepository.currentUser;
@@ -220,14 +221,11 @@ class ActivitiesRepositoryImpl implements ActivitiesRepository {
   }
 
   @override
-  Future<void> createActivity() async {
+  Future<Either<RemoveFromWaitListResult, bool>> createActivity() async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
-      final user = authRepository.currentUser;
 
-      await firestore
-          .collection('activities')
-          .add({});
+      await firestore.collection('activities').add({});
 
       return const Right(true);
     } catch (e, s) {
