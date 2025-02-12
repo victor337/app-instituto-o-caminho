@@ -16,12 +16,12 @@ class ActivitiesListCubit extends Cubit<ActivitiesListState> {
   Future<void> init() async {
     final activitiesResult = await _activitiesRepository.getActivities();
 
-    activitiesResult.fold(
-      (error) {
-        emit(ActivitiesListError());
-      },
+    activitiesResult.when(
       (activities) {
         emit(ActivitiesListDone(activities: activities));
+      },
+      (error) {
+        emit(ActivitiesListError());
       },
     );
   }

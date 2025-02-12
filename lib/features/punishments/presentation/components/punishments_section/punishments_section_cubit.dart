@@ -16,14 +16,14 @@ class PunishmentsSectionCubit extends Cubit<PunishmentsSectionState> {
   Future<void> init() async {
     final result = await _punishmentsRepository.getPunishmentsOfUser();
 
-    result.fold(
-      (_) {
-        emit(PunishmentsSectionError());
-      },
-      (punishments) => {
+    result.when(
+      (punishments) {
         emit(PunishmentsSectionDone(
           punishments: punishments,
-        ))
+        ));
+      },
+      (_) {
+        emit(PunishmentsSectionError());
       },
     );
   }

@@ -45,7 +45,7 @@ class _RegisterPageState extends State<RegisterPage>
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (value) {
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
         controller.backPressed();
       },
       child: BlocProvider.value(

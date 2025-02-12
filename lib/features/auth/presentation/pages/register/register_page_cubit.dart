@@ -98,7 +98,10 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
       pass: state.pass!,
     ));
 
-    result.fold(
+    result.when(
+      (_) {
+        view?.successToRegister();
+      },
       (error) {
         switch (error) {
           case RegisterUserResult.emailAlreadyUse:
@@ -110,9 +113,6 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
             );
             break;
         }
-      },
-      (r) {
-        view?.successToRegister();
       },
     );
 

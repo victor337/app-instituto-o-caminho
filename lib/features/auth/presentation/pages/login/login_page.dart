@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> implements LoginPageView {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (value) {
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
         controller.backPressed();
       },
       child: BlocProvider.value(

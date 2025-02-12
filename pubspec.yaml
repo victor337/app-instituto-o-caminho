@@ -40,7 +40,7 @@ dependencies:
   go_router: ^14.2.0
 
   # Results
-  dartz: ^0.10.1
+  multiple_result: ^5.1.0
 
   # Dependencies Injection
   get_it: ^7.7.0

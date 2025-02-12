@@ -36,24 +36,20 @@ class ActivityDetailsPageCubit extends Cubit<ActivityDetailsPageState> {
       _activitiesRepository.getIfIsWaitList(activityId),
     ]);
 
-    if (results.any((e) => e.isLeft())) {
+    if (results.any((e) => e.isError())) {
       return;
     }
 
-    results[0].fold(
-      (_) => null,
-      (activity) => results[1].fold(
-        (error) => null,
-        (subscribers) => results[2].fold(
-          (_) => null,
+    results[0].whenSuccess(
+      (activity) => results[1].whenSuccess(
+        (subscribers) => results[2].whenSuccess(
           (isWaitList) async {
             final professorResult =
                 await _professorsRepository.getProfessorDataById(
               (activity as Activity).professor,
             );
 
-            professorResult.fold(
-              (error) {},
+            professorResult.when(
               (professor) {
                 final isSubscribe = (subscribers as List<String>).any(
                   (e) => e == _authRepository.currentUser!.id,
@@ -68,6 +64,7 @@ class ActivityDetailsPageCubit extends Cubit<ActivityDetailsPageState> {
                   professor: professor,
                 ));
               },
+              (error) {},
             );
           },
         ),
@@ -94,17 +91,17 @@ class ActivityDetailsPageCubit extends Cubit<ActivityDetailsPageState> {
 
     final result = await _activitiesRepository.cancelSubscription(activityId);
 
-    result.fold(
-      (_) {
-        view?.dialogError(
-          'Hmm...',
-          'Tivemos um problema ao cancelar sua inscrição, tente novamente.',
-        );
-      },
+    result.when(
       (_) {
         emit(state.copyWith(isSubscribe: false, hasVacancies: true));
         view?.successDialog(
           'Sua inscrição foi cancelada com sucesso, sentiremos sua falta!',
+        );
+      },
+      (_) {
+        view?.dialogError(
+          'Hmm...',
+          'Tivemos um problema ao cancelar sua inscrição, tente novamente.',
         );
       },
     );
@@ -117,16 +114,16 @@ class ActivityDetailsPageCubit extends Cubit<ActivityDetailsPageState> {
 
     final result = await _activitiesRepository.removeFromWaitList(activityId);
 
-    result.fold(
+    result.when(
+      (_) {
+        emit(state.copyWith(isWaitList: false));
+        view?.successDialog('Removemos você da lista de espera com sucesso');
+      },
       (_) {
         view?.dialogError(
           'Hm...',
           'Houve um erro ao remover você da lista de espera, tente novamente',
         );
-      },
-      (_) {
-        emit(state.copyWith(isWaitList: false));
-        view?.successDialog('Removemos você da lista de espera com sucesso');
       },
     );
 
@@ -138,7 +135,16 @@ class ActivityDetailsPageCubit extends Cubit<ActivityDetailsPageState> {
 
     final result = await _activitiesRepository.subscribe(activityId);
 
-    result.fold(
+    result.when(
+      (value) {
+        view?.successDialog(
+          'Você se inscreveu nessa atividade com sucesso, basta comparecer no local nos dias informados nessa tela',
+        );
+        emit(state.copyWith(
+          buttonIsLoading: false,
+          isSubscribe: true,
+        ));
+      },
       (e) {
         switch (e) {
           case SubscribeActivityResult.failed:
@@ -152,15 +158,6 @@ class ActivityDetailsPageCubit extends Cubit<ActivityDetailsPageState> {
             emit(state.copyWith(hasVacancies: false, buttonIsLoading: false));
         }
       },
-      (value) {
-        view?.successDialog(
-          'Você se inscreveu nessa atividade com sucesso, basta comparecer no local nos dias informados nessa tela',
-        );
-        emit(state.copyWith(
-          buttonIsLoading: false,
-          isSubscribe: true,
-        ));
-      },
     );
 
     emit(state.copyWith(buttonIsLoading: false));
@@ -171,19 +168,19 @@ class ActivityDetailsPageCubit extends Cubit<ActivityDetailsPageState> {
 
     final result = await _activitiesRepository.joinWaitList(activityId);
 
-    result.fold(
-      (_) {
-        view?.dialogError(
-          'Hm...',
-          'Houve um erro ao colocar você na lista de espera, tente novamente',
-        );
-      },
+    result.when(
       (_) {
         emit(state.copyWith(isWaitList: true));
         view?.successDialog(
           'Você foi inserido na lista de espera, '
           'quando for chamado chegará uma notificação pra você, '
           'então não desinstale o app',
+        );
+      },
+      (_) {
+        view?.dialogError(
+          'Hm...',
+          'Houve um erro ao colocar você na lista de espera, tente novamente',
         );
       },
     );

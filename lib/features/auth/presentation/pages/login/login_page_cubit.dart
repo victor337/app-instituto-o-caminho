@@ -70,7 +70,10 @@ class LoginPageCubit extends Cubit<LoginPageState> {
     emit(state.copyWith(isLoading: true));
     final result = await _authRepository.login(state.email!, state.pass!);
 
-    result.fold(
+    result.when(
+      (_) {
+        view?.successToLogin();
+      },
       (error) {
         switch (error) {
           case LoginResult.incorrectPass:
@@ -92,9 +95,6 @@ class LoginPageCubit extends Cubit<LoginPageState> {
             );
             break;
         }
-      },
-      (r) {
-        view?.successToLogin();
       },
     );
 

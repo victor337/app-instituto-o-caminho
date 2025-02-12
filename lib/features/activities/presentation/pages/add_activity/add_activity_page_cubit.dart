@@ -25,7 +25,7 @@ class AddActivityPageCubit extends Cubit<AddActivityPageState> {
     emit(state.copyWith(isLoading: true));
     final result = await _professorsRepository.getProfessors();
 
-    result.fold((error) {}, (professors) {
+    result.whenSuccess((professors) {
       professorsOptions.addAll(professors);
     });
     emit(state.copyWith(isLoading: false));

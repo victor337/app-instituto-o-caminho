@@ -1,24 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz.dart';
 import 'package:instituto_o_caminho/core/analytics/logger_repository.dart';
 import 'package:instituto_o_caminho/features/activities/domain/entities/activity.dart';
 import 'package:instituto_o_caminho/features/activities/domain/results/cancel_subscription_result.dart';
-import 'package:instituto_o_caminho/features/activities/domain/results/remove_from_wait_list_result.dart';
+import 'package:instituto_o_caminho/features/activities/domain/results/generic_error.dart';
 import 'package:instituto_o_caminho/features/activities/domain/results/get_activities_result.dart';
 import 'package:instituto_o_caminho/features/activities/domain/results/join_wait_list_result.dart';
 import 'package:instituto_o_caminho/features/activities/domain/results/subscribe_activity_result.dart';
 import 'package:instituto_o_caminho/features/auth/domain/repositories/auth_repository.dart';
+import 'package:multiple_result/multiple_result.dart';
 
 abstract class ActivitiesRepository {
-  Future<Either<GetActivitiesResult, List<Activity>>> getActivities();
-  Future<Either<GetActivitiesResult, Activity>> getActivityById(String id);
-  Future<Either<GetActivitiesResult, List<String>>> getSubscribers(String id);
-  Future<Either<GetActivitiesResult, bool>> getIfIsWaitList(String id);
-  Future<Either<SubscribeActivityResult, bool>> subscribe(String id);
-  Future<Either<CancelSubscriptionResult, bool>> cancelSubscription(String id);
-  Future<Either<JoinWaitListResult, bool>> joinWaitList(String id);
-  Future<Either<RemoveFromWaitListResult, bool>> removeFromWaitList(String id);
-  Future<Either<RemoveFromWaitListResult, bool>> createActivity();
+  Future<Result<List<Activity>, GetActivitiesResult>> getActivities();
+  Future<Result<Activity, GetActivitiesResult>> getActivityById(String id);
+  Future<Result<List<String>, GetActivitiesResult>> getSubscribers(String id);
+  Future<Result<bool, GetActivitiesResult>> getIfIsWaitList(String id);
+  Future<Result<bool, SubscribeActivityResult>> subscribe(String id);
+  Future<Result<bool, CancelSubscriptionResult>> cancelSubscription(String id);
+  Future<Result<bool, JoinWaitListResult>> joinWaitList(String id);
+  Future<Result<bool, GenericError>> removeFromWaitList(String id);
+  Future<Result<bool, GenericError>> createActivity();
 }
 
 class ActivitiesRepositoryImpl implements ActivitiesRepository {
@@ -30,13 +30,13 @@ class ActivitiesRepositoryImpl implements ActivitiesRepository {
   final LoggerRepository loggerRepository;
 
   @override
-  Future<Either<GetActivitiesResult, List<Activity>>> getActivities() async {
+  Future<Result<List<Activity>, GetActivitiesResult>> getActivities() async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
       final response = await firestore.collection('activities').get();
 
-      return Right([
+      return Result.success([
         for (final activity in response.docs)
           Activity.fromJson(
             activity.data(),
@@ -44,30 +44,29 @@ class ActivitiesRepositoryImpl implements ActivitiesRepository {
       ]);
     } catch (e, s) {
       loggerRepository.logInfo(e, s, 'Busca das atividades');
-      return const Left(GetActivitiesResult.failed);
+      return const Result.error(GetActivitiesResult.failed);
     }
   }
 
   @override
-  Future<Either<GetActivitiesResult, Activity>> getActivityById(
-    String id,
-  ) async {
+  Future<Result<Activity, GetActivitiesResult>> getActivityById(
+      String id) async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
       final response = await firestore.collection('activities').doc(id).get();
 
-      return Right(Activity.fromJson(
+      return Result.success(Activity.fromJson(
         response.data()!,
       ));
     } catch (e, s) {
       loggerRepository.logInfo(e, s, 'Buscar atividade pelo ID: $id');
-      return const Left(GetActivitiesResult.failed);
+      return const Result.error(GetActivitiesResult.failed);
     }
   }
 
   @override
-  Future<Either<GetActivitiesResult, List<String>>> getSubscribers(
+  Future<Result<List<String>, GetActivitiesResult>> getSubscribers(
     String id,
   ) async {
     try {
@@ -79,15 +78,16 @@ class ActivitiesRepositoryImpl implements ActivitiesRepository {
           .collection('subscribers')
           .get();
 
-      return Right([for (final user in response.docs) user.data()['userId']]);
+      return Result.success(
+          [for (final user in response.docs) user.data()['userId']]);
     } catch (e, s) {
       loggerRepository.logInfo(e, s, 'Buscar inscritos em uma atividade');
-      return const Left(GetActivitiesResult.failed);
+      return const Result.error(GetActivitiesResult.failed);
     }
   }
 
   @override
-  Future<Either<GetActivitiesResult, bool>> getIfIsWaitList(String id) async {
+  Future<Result<bool, GetActivitiesResult>> getIfIsWaitList(String id) async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
       final user = authRepository.currentUser;
@@ -99,7 +99,7 @@ class ActivitiesRepositoryImpl implements ActivitiesRepository {
           .where('userId', isEqualTo: user!.id)
           .get();
 
-      return Right(response.docs.isNotEmpty);
+      return Result.success(response.docs.isNotEmpty);
     } catch (e, s) {
       loggerRepository.logInfo(
         e,
@@ -107,12 +107,12 @@ class ActivitiesRepositoryImpl implements ActivitiesRepository {
         'Buscar se usuário está na lista de espera na atividade $id',
       );
 
-      return const Left(GetActivitiesResult.failed);
+      return const Result.error(GetActivitiesResult.failed);
     }
   }
 
   @override
-  Future<Either<SubscribeActivityResult, bool>> subscribe(String id) async {
+  Future<Result<bool, SubscribeActivityResult>> subscribe(String id) async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
       final user = authRepository.currentUser;
@@ -133,20 +133,19 @@ class ActivitiesRepositoryImpl implements ActivitiesRepository {
             .set({
           "userId": user.id,
         });
-        return const Right(true);
+        return const Result.success(true);
       }
 
-      return const Left(SubscribeActivityResult.isFull);
+      return const Result.error(SubscribeActivityResult.isFull);
     } catch (e, s) {
       loggerRepository.logInfo(e, s, 'Inscrever usuário na atividade $id');
-      return const Left(SubscribeActivityResult.failed);
+      return const Result.error(SubscribeActivityResult.failed);
     }
   }
 
   @override
-  Future<Either<CancelSubscriptionResult, bool>> cancelSubscription(
-    String id,
-  ) async {
+  Future<Result<bool, CancelSubscriptionResult>> cancelSubscription(
+      String id) async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
       final user = authRepository.currentUser;
@@ -158,19 +157,19 @@ class ActivitiesRepositoryImpl implements ActivitiesRepository {
           .doc(user!.id)
           .delete();
 
-      return const Right(true);
+      return const Result.success(true);
     } catch (e, s) {
       loggerRepository.logInfo(
         e,
         s,
         'Cancelar inscrição de usuário na atividade $id',
       );
-      return const Left(CancelSubscriptionResult.failed);
+      return const Result.error(CancelSubscriptionResult.failed);
     }
   }
 
   @override
-  Future<Either<JoinWaitListResult, bool>> joinWaitList(String id) async {
+  Future<Result<bool, JoinWaitListResult>> joinWaitList(String id) async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
       final user = authRepository.currentUser;
@@ -183,19 +182,19 @@ class ActivitiesRepositoryImpl implements ActivitiesRepository {
           .set({
         "userId": user.id,
       });
-      return const Right(true);
+      return const Result.success(true);
     } catch (e, s) {
       loggerRepository.logInfo(
         e,
         s,
         'Inserir usuário na lista de espera da atividade $id',
       );
-      return const Left(JoinWaitListResult.failed);
+      return const Result.error(JoinWaitListResult.failed);
     }
   }
 
   @override
-  Future<Either<RemoveFromWaitListResult, bool>> removeFromWaitList(
+  Future<Result<bool, GenericError>> removeFromWaitList(
     String id,
   ) async {
     try {
@@ -209,32 +208,32 @@ class ActivitiesRepositoryImpl implements ActivitiesRepository {
           .doc(user!.id)
           .delete();
 
-      return const Right(true);
+      return const Result.success(true);
     } catch (e, s) {
       loggerRepository.logInfo(
         e,
         s,
         'Remover usuário de uma lista de espera na atividade $id',
       );
-      return const Left(RemoveFromWaitListResult.failed);
+      return const Result.error(GenericError.failed);
     }
   }
 
   @override
-  Future<Either<RemoveFromWaitListResult, bool>> createActivity() async {
+  Future<Result<bool, GenericError>> createActivity() async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
       await firestore.collection('activities').add({});
 
-      return const Right(true);
+      return const Result.success(true);
     } catch (e, s) {
       loggerRepository.logInfo(
         e,
         s,
-        'Remover usuário de uma lista de espera na atividade $id',
+        'Criar atividade',
       );
-      return const Left(RemoveFromWaitListResult.failed);
+      return const Result.error(GenericError.failed);
     }
   }
 }

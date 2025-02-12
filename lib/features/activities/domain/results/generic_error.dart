@@ -1,0 +1,3 @@
+enum GenericError {
+  failed,
+}

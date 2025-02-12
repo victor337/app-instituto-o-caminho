@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:instituto_o_caminho/core/analytics/logger_repository.dart';
@@ -9,12 +8,13 @@ import 'package:instituto_o_caminho/features/auth/domain/entities/app_user.dart'
 import 'package:instituto_o_caminho/features/auth/domain/entities/register_user_data.dart';
 import 'package:instituto_o_caminho/features/auth/domain/results/login_result.dart';
 import 'package:instituto_o_caminho/features/auth/domain/results/register_user_result.dart';
+import 'package:multiple_result/multiple_result.dart';
 import 'package:path_provider/path_provider.dart';
 
 abstract class AuthRepository {
   AppUser? get currentUser;
-  Future<Either<RegisterUserResult, bool>> registerUser(RegisterUserData data);
-  Future<Either<LoginResult, AppUser>> login(String email, String pass);
+  Future<Result<bool, RegisterUserResult>> registerUser(RegisterUserData data);
+  Future<Result<AppUser, LoginResult>> login(String email, String pass);
   Future<void> logout();
   Future<bool> updateUserData(AppUser data);
 }
@@ -31,7 +31,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<RegisterUserResult, bool>> registerUser(
+  Future<Result<bool, RegisterUserResult>> registerUser(
     RegisterUserData data,
   ) async {
     try {
@@ -50,21 +50,21 @@ class AuthRepositoryImpl implements AuthRepository {
               }),
           );
 
-      return const Right(true);
+      return const Result.success(true);
     } on FirebaseAuthException catch (e, s) {
       if (e.code == 'email-already-in-use') {
-        return const Left(RegisterUserResult.emailAlreadyUse);
+        return const Result.error(RegisterUserResult.emailAlreadyUse);
       }
       loggerRepository.logInfo(e, s, 'Registrar usuário');
-      return const Left(RegisterUserResult.failed);
+      return const Result.error(RegisterUserResult.failed);
     } catch (e, s) {
       loggerRepository.logInfo(e, s, 'Registrar usuário');
-      return const Left(RegisterUserResult.failed);
+      return const Result.error(RegisterUserResult.failed);
     }
   }
 
   @override
-  Future<Either<LoginResult, AppUser>> login(String email, String pass) async {
+  Future<Result<AppUser, LoginResult>> login(String email, String pass) async {
     try {
       final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -84,20 +84,20 @@ class AuthRepositoryImpl implements AuthRepository {
 
       _user = AppUser.fromJson(doc.data()!);
       _user!.isAdmin = isAdmin.docs.isNotEmpty;
-      return Right(_user!);
+      return Result.success(_user!);
     } on FirebaseAuthException catch (e, s) {
       if (e.code == 'wrong-password') {
-        return const Left(LoginResult.incorrectPass);
+        return const Result.error(LoginResult.incorrectPass);
       } else if (e.code == 'user-not-found') {
-        return const Left(LoginResult.noUser);
+        return const Result.error(LoginResult.noUser);
       } else if (e.code == 'invalid-credential') {
-        return const Left(LoginResult.noUser);
+        return const Result.error(LoginResult.noUser);
       }
       loggerRepository.logInfo(e, s, 'Login de usuário');
-      return const Left(LoginResult.failed);
+      return const Result.error(LoginResult.failed);
     } catch (e, s) {
       loggerRepository.logInfo(e, s, 'Login de usuário');
-      return const Left(LoginResult.failed);
+      return const Result.error(LoginResult.failed);
     }
   }
 

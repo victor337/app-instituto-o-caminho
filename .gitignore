@@ -44,3 +44,6 @@ app.*.map.json
 /android/app/release
 pubspec.lock
 .fvm
+/devtools_options.yaml
+/android/build/reports/problems/problems-report.html
+

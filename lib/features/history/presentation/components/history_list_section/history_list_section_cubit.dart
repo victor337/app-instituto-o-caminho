@@ -18,12 +18,12 @@ class HistoryListSectionCubit extends Cubit<HistoryListSectionState> {
 
     final result = await _historyRepository.getHistoryOfUser();
 
-    result.fold(
-      (error) {
-        emit(HistoryListSectionError());
-      },
-      (history) async {
+    result.when(
+      (history) {
         emit(HistoryListSectionDone(history: history));
+      },
+      (_) async {
+        emit(HistoryListSectionError());
       },
     );
   }

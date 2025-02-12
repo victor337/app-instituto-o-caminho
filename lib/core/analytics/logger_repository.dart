@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 
@@ -8,9 +10,7 @@ abstract class LoggerRepository {
 class LoggerRepositoryImpl implements LoggerRepository {
   @override
   Future<void> logInfo(Object e, StackTrace s, String reason) async {
-    debugPrint(reason);
-    debugPrint('$e');
-    debugPrint('$s');
+    log('$reason: $e', stackTrace: s);
     await FirebaseCrashlytics.instance.recordFlutterFatalError(
       FlutterErrorDetails(
         exception: e,
