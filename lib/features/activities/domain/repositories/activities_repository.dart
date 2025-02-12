@@ -18,7 +18,11 @@ abstract class ActivitiesRepository {
   Future<Result<bool, CancelSubscriptionResult>> cancelSubscription(String id);
   Future<Result<bool, JoinWaitListResult>> joinWaitList(String id);
   Future<Result<bool, GenericError>> removeFromWaitList(String id);
-  Future<Result<bool, GenericError>> createActivity();
+  Future<Result<bool, GenericError>> cancelClass({
+    required String id,
+    required DateTime date,
+    String? reason,
+  });
 }
 
 class ActivitiesRepositoryImpl implements ActivitiesRepository {
@@ -220,18 +224,30 @@ class ActivitiesRepositoryImpl implements ActivitiesRepository {
   }
 
   @override
-  Future<Result<bool, GenericError>> createActivity() async {
+  Future<Result<bool, GenericError>> cancelClass({
+    required String id,
+    required DateTime date,
+    String? reason,
+  }) async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-      await firestore.collection('activities').add({});
+      await firestore
+          .collection('activities')
+          .doc(id)
+          .collection('cancellation')
+          .doc()
+          .set({
+        'date': Timestamp.fromDate(date),
+        'reason': reason,
+      });
 
       return const Result.success(true);
     } catch (e, s) {
       loggerRepository.logInfo(
         e,
         s,
-        'Criar atividade',
+        'Cancelar uma atividade $id',
       );
       return const Result.error(GenericError.failed);
     }
