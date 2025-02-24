@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:instituto_o_caminho/core/routes/app_routes_list.dart';
 import 'package:instituto_o_caminho/features/activities/presentation/pages/activity_details/activity_details_page.dart';
 import 'package:instituto_o_caminho/features/activities/presentation/pages/add_activity/add_activity_page.dart';
+import 'package:instituto_o_caminho/features/activities/presentation/pages/cancel_activity/cancel_activity_page.dart';
 import 'package:instituto_o_caminho/features/auth/presentation/pages/login/login_page.dart';
 import 'package:instituto_o_caminho/features/auth/presentation/pages/register/register_page.dart';
 import 'package:instituto_o_caminho/features/home/presentation/pages/home_page.dart';
@@ -47,6 +48,15 @@ class AppRoutes {
               return CustomPage(
                 state: state,
                 child: ActivityDetailsPage(activityId: activityId),
+              );
+            },
+          ),
+          GoRoute(
+            path: AppRoutesList.cancelActivity.path,
+            pageBuilder: (context, state) {
+              return CustomPage(
+                state: state,
+                child: const CancelActivityPage(),
               );
             },
           ),

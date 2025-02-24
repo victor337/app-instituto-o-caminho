@@ -103,7 +103,9 @@ class _AppMenuState extends State<AppMenu> {
             AppMenuItem(
               title: 'Cancelar aula',
               iconData: Icons.cancel,
-              onPressed: () {},
+              onPressed: () {
+                context.push(AppRoutesList.cancelActivity.fullPath);
+              },
             ),
           ],
           AppMenuItem(

@@ -16,6 +16,11 @@ class AppRoutesList {
     fullPath: '/add-activity',
   );
 
+  static const cancelActivity = AppRoute(
+    path: 'cancel-activity',
+    fullPath: '/cancel-activity',
+  );
+
   static AppRouteWithId activityDetails = AppRouteWithId(
     path: 'activity-details/:id',
     buildFullPath: (id) => '/activity-details/$id',
